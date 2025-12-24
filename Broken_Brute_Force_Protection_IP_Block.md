@@ -93,7 +93,7 @@ Once I understood that **any successful login resets the counter**, the attack b
 ---
 
 ## Key Takeaways
-- Brute-force protection must be tied to the specific user, not just the IP
-- Authentication logic must not reset security counters globally
-- Understanding application logic is more important than tool usage
-- Small logic flaws can completely bypass security controls
+- Brute-force protection must be tied to the specific user, not just the IP.
+- Authentication logic must not reset security counters globally.
+- Understanding application logic is more important than tool usage.
+- Small logic flaws can completely bypass security controls.
