@@ -1,0 +1,140 @@
+# Authentication Labs – PortSwigger  
+## Lab: Username Enumeration via Account Lock
+
+---
+
+## Lab Overview
+
+### Objective
+- Identify a valid username using account lock behavior  
+- Brute-force the password for the identified username  
+- Successfully authenticate and access the user account  
+
+### Given
+- Candidate usernames  
+- Candidate passwords  
+
+---
+
+## Vulnerability
+
+- **Authentication logic flaw**
+- **Username enumeration via account locking mechanism**
+
+The application applies account locking **only to existing usernames**, which allows an attacker to infer whether a username exists based on response behavior.
+
+---
+
+## Application Behavior
+
+- The application locks an account after multiple failed login attempts  
+- Account locking is **username-based**, not IP-based  
+- Once an account is locked, the server returns a **different error message**  
+- This behavior differs between:
+  - Existing usernames
+  - Non-existing usernames  
+
+As a result, **username existence can be inferred from response differences**.
+
+---
+
+## Lab Solution
+
+### 1. Username Enumeration
+
+- Multiple failed login attempts were sent using the **same username**
+- Server responses were carefully observed after repeated failures
+- Usernames that triggered a **lock-related response** were identified as valid
+
+> **If an account can be locked, it must exist.**
+
+This confirmed the correct username.
+
+---
+
+### 2. Password Brute-Forcing
+
+After identifying a valid username:
+
+- **Burp Suite Intruder – Sniper attack** was used on the password parameter
+- Responses were manually reviewed for behavioral differences
+
+Successful authentication was identified by:
+- Absence of an error message
+- Different response behavior (redirect / session cookie change)
+
+---
+
+## Why Automation Was Limited
+
+- Burp Suite Community Edition enforces **request throttling**
+- The application locks accounts after **5–6 failed attempts per minute**
+
+**Cluster Bomb attack became impractical due to:**
+- Slow request rate
+- Account locking before attack completion
+
+As a result, **manual, controlled testing using Burp Repeater proved more effective**.
+
+---
+
+## What Worked Well
+
+- Manual, logic-driven testing  
+- Error message analysis instead of blind brute-forcing  
+- Understanding **why** the account lock occurs, not just **how**
+
+---
+
+## What I Missed (Learning Points)
+
+- Did not initially try repeating the same username multiple times in a Sniper attack  
+  - Repeating usernames could have automated account lock detection  
+  - This realization came after manually solving the lab  
+
+- Attempted a **Pitchfork attack**
+  - Failed due to parallel requests triggering defensive logic
+  - Resulted in `400` responses
+
+---
+
+## Key Takeaways
+
+- Account locking mechanisms can leak valid usernames  
+- Defensive features can unintentionally become attack vectors  
+- Manual testing can outperform automation in restricted environments  
+- Understanding application logic is more important than tool usage  
+
+---
+
+## Real-World Relevance
+
+This vulnerability is commonly found in:
+- Login portals  
+- Admin panels  
+- Internal enterprise applications  
+
+It can be chained with:
+- Password brute-force attacks  
+- Credential stuffing attacks  
+
+---
+
+## Evidence
+
+This lab was solved through manual and semi-automated testing.  
+Screenshots were not captured during the initial solve due to focus on 
+logic analysis and response behavior.  
+
+The report emphasizes methodology, observations, and reasoning over tooling artifacts.
+
+---
+
+## Final Outcome
+
+- Valid username successfully enumerated  
+- Password brute-forced  
+- Account accessed  
+- Lab successfully solved  
+
+---
