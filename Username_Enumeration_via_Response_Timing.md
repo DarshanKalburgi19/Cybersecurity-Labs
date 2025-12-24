@@ -67,7 +67,7 @@ Successfully logged in using the discovered credentials and completed the lab.
 ---
 
 ## Key Takeaways
-- Response timing alone can leak sensitive information
-- Authentication logic must behave consistently for all failure cases
-- Trusting client-controlled headers is dangerous
-- Understanding *why* an attack works is more important than just solving the lab
+- Response timing alone can leak sensitive information.
+- Authentication logic must behave consistently for all failure cases.
+- Trusting client-controlled headers is dangerous.
+- Understanding *why* an attack works is more important than just solving the lab.
